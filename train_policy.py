@@ -7,10 +7,12 @@ os.environ["XLA_PYTHON_CLIENT_PREALLOCATE"] = "false"
 os.environ["MUJOCO_GL"] = "egl"
 
 import logging as python_logging
+
 LOGGER = python_logging.getLogger()
 LOGGER.setLevel(python_logging.INFO)
 
 from absl import logging
+
 logging.set_verbosity(logging.INFO)
 
 import functools
@@ -25,9 +27,30 @@ import jax.numpy as jp
 from brax.training.agents.ppo.networks import make_ppo_networks
 
 from src.learning.ppo import train_ppo as ppo
-from src.envs.g1.g1_tracking_env import G1TrackingEnv, default_config
-from src.envs.g1.wrapper import wrap_fn
-from src.envs.g1.randomize import domain_randomize_model, domain_randomize_terrain
+
+# from src.envs.g1.g1_tracking_env import G1TrackingEnv, default_config
+# from src.envs.g1.wrapper import wrap_fn
+# from src.envs.g1.randomize import domain_randomize_model, domain_randomize_terrain
+
+# from src.envs.adam_lite.adam_lite_tracking_env import (
+#     AdamLiteTrackingEnv,
+#     default_config,
+# )
+# from src.envs.adam_lite.wrapper import wrap_fn
+# from src.envs.adam_lite.randomize import (
+#     domain_randomize_model,
+#     domain_randomize_terrain,
+# )
+
+from src.envs.adamsp.adamsp_tracking_env import (
+    AdamSPTrackingEnv,
+    default_config,
+)
+from src.envs.adamsp.wrapper import wrap_fn
+from src.envs.adamsp.randomize import (
+    domain_randomize_model,
+    domain_randomize_terrain,
+)
 
 
 @dataclass
@@ -35,7 +58,7 @@ class Args:
     exp_name: str = "debug"
     num_timesteps: int = 3_000_000_000
     enable_randomize: bool = True
-    terrain_type: str = "flat_terrain" # choose from flat_terrain, rough_terrain
+    terrain_type: str = "flat_terrain"  # choose from flat_terrain, rough_terrain
 
 
 def _setup_paths(exp_name: str) -> tuple[Path, Path]:
@@ -51,14 +74,14 @@ def _apply_policy_args_to_config(args: Args, cfg, debug: bool):
     if debug:
         cfg.training_metrics_steps = 1000
         cfg.num_evals = 0
-        cfg.batch_size = 8
+        cfg.batch_size = 64  # 进一步减少batch size
         cfg.num_minibatches = 2
-        cfg.num_envs = cfg.batch_size * cfg.num_minibatches
-        cfg.episode_length = 200
-        cfg.unroll_length = 10
+        cfg.num_envs = cfg.batch_size * cfg.num_minibatches  # 128个环境
+        cfg.episode_length = 100  # 进一步减少episode长度
+        cfg.unroll_length = 5  # 进一步减少unroll长度
         cfg.num_updates_per_batch = 1
         cfg.action_repeat = 1
-        cfg.num_timesteps = 100_000
+        cfg.num_timesteps = 50_000  # 减少总训练步数
         cfg.num_resets_per_eval = 1
 
 
@@ -68,7 +91,9 @@ def _prepare_training_params(cfg, ckpt_path: Path):
     params["wrap_env_fn"] = wrap_fn
     network_fn = make_ppo_networks
     params["network_factory"] = (
-        functools.partial(network_fn, **cfg.network_factory) if hasattr(cfg, "network_factory") else network_fn
+        functools.partial(network_fn, **cfg.network_factory)
+        if hasattr(cfg, "network_factory")
+        else network_fn
     )
     params["save_checkpoint_path"] = ckpt_path
     return params
@@ -134,7 +159,7 @@ def train(args: Args):
     wandb.init(
         project="any2track",
         name=args.exp_name,
-        mode="online" if not debug_mode else "disabled"
+        mode="online" if not debug_mode else "disabled",
     )
     wandb.config.update(task_cfg.to_dict())
     config_path = ckpt_path / "config.json"
@@ -143,19 +168,23 @@ def train(args: Args):
     train_fn = functools.partial(ppo.train, **policy_params)
     times = [time.monotonic()]
 
-    env = G1TrackingEnv(terrain_type=env_cfg.terrain_type, config=env_cfg)
+    env = AdamSPTrackingEnv(terrain_type=env_cfg.terrain_type, config=env_cfg)
     trajectory_data = get_trajectory_handler(env)
 
     if env_cfg.terrain_type == "rough_terrain":
         hfield_data = jp.asarray(np.load("data/hfield/terrain.npz")["hfield_data"])
-        dr_func = functools.partial(domain_randomize_terrain, all_hfield_data=hfield_data)
+        dr_func = functools.partial(
+            domain_randomize_terrain, all_hfield_data=hfield_data
+        )
     else:
         dr_func = domain_randomize_model
 
     make_inference_fn, params, _ = train_fn(
         environment=env,
         trajectory_data=trajectory_data,
-        progress_fn=lambda s, m: _progress(s, m, times, policy_cfg.num_timesteps, debug_mode),
+        progress_fn=lambda s, m: _progress(
+            s, m, times, policy_cfg.num_timesteps, debug_mode
+        ),
         policy_params_fn=lambda *args: None,
         randomization_fn=dr_func if env_cfg.enable_randomize else None,
     )

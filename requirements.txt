@@ -12,3 +12,4 @@ wandb
 imageio[ffmpeg]>=2.37.0
 joblib>=1.5.2
 absl-py
+ml-collections
