@@ -452,6 +452,12 @@ class AdamSPTrackingEnv(adamsp_base.AdamSPEnv):
         init_traj_data = self.th.get_current_traj_data_with_trajectory(
             trajectory_data, carry
         )
+
+        # raise the root height by 0.02m to avoid init collision between the feet and the floor
+        init_traj_data = init_traj_data.replace(
+            qpos=init_traj_data.qpos.at[2].set(init_traj_data.qpos[2] + 0.02)
+        )
+
         data = mjx_env.init(
             self.mjx_model,
             qpos=init_traj_data.qpos,
@@ -663,7 +669,9 @@ class AdamSPTrackingEnv(adamsp_base.AdamSPEnv):
             path_to_datasets = os.path.join(os.getcwd(), "data", "mocap", dataset_name)
             for idx, t_name in enumerate(tqdm(traj_names)):
                 # load the npz file
-                traj_path = os.path.join(path_to_datasets, "PndAdamSP", f"{t_name}.npz")
+                traj_path = os.path.join(
+                    path_to_datasets, "PndAdamSP", "all", f"{t_name}.npz"
+                )
                 traj = Trajectory.load(traj_path, backend=np)
 
                 if not traj.data.is_complete:

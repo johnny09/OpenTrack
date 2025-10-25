@@ -61,7 +61,6 @@ class PlayAdamSPTrackingEnv:
             import mujoco.viewer as viewer
 
             self.viewer = viewer.launch_passive(self.mj_model, self.mj_data)
-
         if self.use_renderer:
             self.renderer = mujoco.Renderer(self.mj_model, height=480, width=640)
             self.ref_renderer = mujoco.Renderer(self.mj_model, height=480, width=640)
@@ -217,8 +216,12 @@ class PlayAdamSPTrackingEnv:
     def _reset_from_current_traj(self):
         qpos, qvel = self.th.get_current_traj_data_fast(self.current_traj_info)
         self.evaluation_metrics = collections.defaultdict(list)
-
+        print("############################3")
+        print(qpos[2])
+        qpos = qpos.at[2].set(qpos[2] + 0.02)  # 需要将结果赋值回qpos
+        print(qpos[2])
         self.mj_data.qpos[:] = qpos
+
         self.mj_data.qvel[:] = qvel
         self.ref_mj_data.qpos[:] = qpos
         self.ref_mj_data.qvel[:] = qvel
@@ -274,9 +277,17 @@ class PlayAdamSPTrackingEnv:
             motor_targets[self.action_joint_ids] = lower_motor_targets
             state.info["last_motor_targets"] = motor_targets.copy()
 
+            state.info["joint_torque"] = []
+            state.info["joint_velocity"] = []
             for _ in range(int(self.dt / self.sim_dt)):
                 self.mj_data.ctrl[:] = motor_targets
                 mujoco.mj_step(self.mj_model, self.mj_data)
+
+                # 进入 step 时不清空 joint_torque，只在每个 step 累积
+                torque = self.mj_data.actuator_force.copy()
+                velocity = self.mj_data.qvel[6:].copy()
+                state.info["joint_torque"].append(torque)
+                state.info["joint_velocity"].append(velocity)
 
         # view or render
         if self.use_viewer:
@@ -405,7 +416,9 @@ class PlayAdamSPTrackingEnv:
             for t_name in traj_names:
                 print(f"Loading trajectory {t_name} from {path_to_datasets}")
                 # load the npz file
-                traj_path = os.path.join(path_to_datasets, "PndAdamSP", f"{t_name}.npz")
+                traj_path = os.path.join(
+                    path_to_datasets, "PndAdamSP", "walk_run", f"{t_name}.npz"
+                )
                 traj = Trajectory.load(traj_path, backend=np)
 
                 # recalculate velocity

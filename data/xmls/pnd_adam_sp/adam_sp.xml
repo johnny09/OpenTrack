@@ -120,7 +120,7 @@
   </asset>
 
   <worldbody>
-    <body name="pelvis" pos="0 0 0.95">
+    <body name="pelvis" pos="0 0 0.96">
       <inertial pos="-0.00034724 0 -0.00735759" quat="0.502838 0.502859 -0.497127 0.497143" mass="10.3565" diaginertia="0.0687803 0.0621174 0.0345151" />
       <!-- <joint name="floating_base" type="free" limited="false" actuatorfrclimited="false" /> -->
       <freejoint name="root"/>
@@ -405,13 +405,13 @@
     <position joint="left_hip_yaw_joint" name="left_hip_yaw_joint"  kp="100" kv="2" forcerange="-105.0 105.0" forcelimited="true"/>
     <position joint="left_knee_joint" name="left_knee_joint" kp="200" kv="4" forcerange="-230.0 230.0" forcelimited="true"/>
     <position joint="left_ankle_pitch_joint" name="left_ankle_pitch_joint" kp="80" kv="2" forcerange="-40.0 40.0" forcelimited="true"/>
-    <position joint="left_ankle_roll_joint" name="left_ankle_roll_joint" kp="20" kv="1" forcerange="-12.0 12.0" forcelimited="true"/>
+    <position joint="left_ankle_roll_joint" name="left_ankle_roll_joint" kp="20" kv="1" forcerange="-40.0 40.0" forcelimited="true"/>
     <position joint="right_hip_pitch_joint" name="right_hip_pitch_joint" kp="100" kv="2" forcerange="-230.0 230.0" forcelimited="true"/>
     <position joint="right_hip_roll_joint" name="right_hip_roll_joint" kp="100" kv="2" forcerange="-160.0 160.0" forcelimited="true"/>
     <position joint="right_hip_yaw_joint" name="right_hip_yaw_joint" kp="100" kv="2" forcerange="-105.0 105.0" forcelimited="true"/>
     <position joint="right_knee_joint" name="right_knee_joint" kp="200" kv="4" forcerange="-230.0 230.0" forcelimited="true"/>
     <position joint="right_ankle_pitch_joint" name="right_ankle_pitch_joint" kp="80" kv="2" forcerange="-40.0 40.0" forcelimited="true"/>
-    <position joint="right_ankle_roll_joint" name="right_ankle_roll_joint" kp="20" kv="1" forcerange="-12.0 12.0" forcelimited="true"/>
+    <position joint="right_ankle_roll_joint" name="right_ankle_roll_joint" kp="20" kv="1" forcerange="-40.0 40.0" forcelimited="true"/>
     <position joint="waist_roll_joint" name="waist_roll_joint" kp="300" kv="10" forcerange="-110.0 110.0" forcelimited="true"/>
     <position joint="waist_pitch_joint" name="waist_pitch_joint" kp="300" kv="10" forcerange="-110.0 110.0" forcelimited="true"/>
     <position joint="waist_yaw_joint" name="waist_yaw_joint" kp="300" kv="10" forcerange="-110.0 110.0" />
