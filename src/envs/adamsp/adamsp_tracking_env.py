@@ -117,8 +117,10 @@ def default_config() -> config_dict.ConfigDict:
                 feet_slipping_sigma=2.0,
             ),
             penalize_collision_on=[
-                ["left_hand_collision", "left_thigh"],
-                ["right_hand_collision", "right_thigh"],
+                ["left_hand_collision", "left_thigh_up_collision"],
+                ["left_hand_collision", "left_thigh_down_collision"],
+                ["right_hand_collision", "right_thigh_up_collision"],
+                ["right_hand_collision", "right_thigh_down_collision"],
                 ["left_hand_collision", "right_hand_collision"],
                 # ["left_hand_collision", "right_wrist_pitch_collision"],
                 # ["right_hand_collision", "left_wrist_pitch_collision"],

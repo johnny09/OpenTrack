@@ -372,7 +372,8 @@ class PlayAdamSPTrackingEnv:
         # joint
         joint_pos = self.mj_data.qpos[7:]
         joint_vel = self.mj_data.qvel[6:]
-
+        print("############################3")
+        print(joint_pos)
         # reference
         dif_joint_pos = qpos[7:] - joint_pos
         dif_joint_vel = qvel[6:] - joint_vel
@@ -417,7 +418,7 @@ class PlayAdamSPTrackingEnv:
                 print(f"Loading trajectory {t_name} from {path_to_datasets}")
                 # load the npz file
                 traj_path = os.path.join(
-                    path_to_datasets, "PndAdamSP", "walk_run", f"{t_name}.npz"
+                    path_to_datasets, "PndAdamSP", "all", f"{t_name}.npz"
                 )
                 traj = Trajectory.load(traj_path, backend=np)
 

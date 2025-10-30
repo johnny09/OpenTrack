@@ -48,8 +48,20 @@ HAND_SITES = [
     "right_palm",
 ]
 
-LEFT_FEET_GEOMS = ["left_foot"]
-RIGHT_FEET_GEOMS = ["right_foot"]
+LEFT_FEET_GEOMS = [
+    "left_foot_center_collision",
+    "left_foot_fr_collision",
+    "left_foot_fl_collision",
+    "left_foot_br_collision",
+    "left_foot_bl_collision",
+]
+RIGHT_FEET_GEOMS = [
+    "right_foot_center_collision",
+    "right_foot_fr_collision",
+    "right_foot_fl_collision",
+    "right_foot_br_collision",
+    "right_foot_bl_collision",
+]
 FEET_GEOMS = LEFT_FEET_GEOMS + RIGHT_FEET_GEOMS
 
 ROOT_BODY = "torso_link"
@@ -219,20 +231,20 @@ TORQUE_LIMIT = np.array(
         230.0,
         160.0,
         105.0,
-        230.0,
-        40.0,
-        40.0,
+        280.0,
+        80.0,
+        80.0,
         # Right leg
         230.0,
         160.0,
         105.0,
-        230.0,
-        40.0,
-        40.0,
+        280.0,
+        80.0,
+        80.0,
         # Waist
-        110.0,
-        110.0,
-        110.0,
+        150.0,
+        150.0,
+        150.0,
         # Left arm
         65.0,
         65.0,
@@ -440,28 +452,28 @@ SHOULDER_LINKs = ["left_shoulder_pitch_link", "right_shoulder_pitch_link"]
 
 
 LAFAN1_DATASETS = [
-    "run1_subject2_extended",
-    "run1_subject5_extended",
-    "run2_subject1_extended",
-    "run2_subject4_extended",
-    "walk1_subject1_extended",
-    "walk1_subject2_extended",
-    "walk1_subject5_extended",
-    "walk2_subject1_extended",
-    "walk2_subject3_extended",
-    "walk2_subject4_extended",
-    "walk3_subject1_extended",
-    "walk3_subject2_extended",
-    "walk3_subject3_extended",
-    "walk3_subject4_extended",
-    "walk3_subject5_extended",
-    "walk4_subject1_extended",
+    # "run1_subject2_extended",
+    # "run1_subject5_extended",
+    # "run2_subject1_extended",
+    # "run2_subject4_extended",
+    # "walk1_subject1_extended",
+    # "walk1_subject2_extended",
+    # "walk1_subject5_extended",
+    # "walk2_subject1_extended",
+    # "walk2_subject3_extended",
+    # "walk2_subject4_extended",
+    # "walk3_subject1_extended",
+    # "walk3_subject2_extended",
+    # "walk3_subject3_extended",
+    # "walk3_subject4_extended",
+    # "walk3_subject5_extended",
+    # "walk4_subject1_extended",
     "dance1_subject1_extended",
     "dance1_subject2_extended",
-    "dance1_subject3_extended",
+    "dance1_subject3_extended",  # ok
     "dance2_subject1_extended",
     "dance2_subject2_extended",
     "dance2_subject3_extended",
     "dance2_subject4_extended",
-    "dance2_subject5_extended",
+    "dance2_subject5_extended",  # ok
 ]
