@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mujoco model="rotating_cylinder">
+  <compiler angle="radian" />
+  <!-- 使用RK4积分器更稳定，减少数值误差 -->
+  <option timestep="0.002" iterations="10" ls_iterations="10" integrator="RK4"/>
+  
+  <!-- 默认设置 -->
+  <default>
+    <geom rgba="0.7 0.7 0.7 1" />
+    <!-- 大幅增加阻尼以减少抖动 -->
+    <joint damping="0.1" armature="0.01" frictionloss="0.1"/>
+  </default>
+  
+  <!-- 世界体 -->
+  <worldbody>
+    <!-- 地面 -->
+    <geom name="floor" type="plane" size="2 2 0.1" rgba="0.8 0.8 0.8 1" />
+    
+    <!-- 光源 -->
+    <light name="light1" pos="0 0 3" dir="0 0 -1" />
+    
+    <!-- 基座（固定） -->
+    <body name="base" pos="0 0 0.5">
+      <geom name="base_geom" type="box" size="0.1 0.1 0.5" rgba="0.5 0.5 0.5 1" />
+      
+      <!-- 旋转关节和圆柱体 -->
+      <body name="rotating_body" pos="0 0 0.8">
+        <!-- 惯性属性：质量、质心位置、惯性矩阵 -->
+        <!-- 
+          圆柱体参数：
+          - 半径 r = 0.2m
+          - 高度 h = 0.6m (半高 0.3m * 2)
+          - 质量 m = 2.0kg
+          
+          对于绕Z轴旋转的圆柱体：
+          - Ixx = Iyy = m * (3*r² + h²) / 12
+          - Izz = m * r² / 2
+          
+          计算：
+          - Ixx = Iyy = 2.0 * (3*0.04 + 0.36) / 12 = 2.0 * 0.48 / 12 = 0.08
+          - Izz = 2.0 * 0.04 / 2 = 0.04
+        -->
+        <inertial 
+          pos="0 0 0" 
+          quat="1 0 0 0" 
+          mass="2.0" 
+          diaginertia="0.08 0.08 0.04" />
+        
+        <!-- 旋转关节：绕 Z 轴旋转 -->
+        <joint name="rotation_joint" pos="0 0 0" axis="0 0 1"  actuatorfrcrange="-100 100"/>
+        
+        <!-- 圆柱体 -->
+        <geom name="cylinder" type="cylinder" size="0.2 0.3" rgba="0.2 0.6 0.9 1" />
+        
+        <!-- 可选：添加一个可视化标记来显示旋转 -->
+        <site name="marker" pos="0.3 0 0" size="0.02" rgba="1 0 0 1" />
+      </body>
+    </body>
+  </worldbody>
+  
+  <!-- 执行器：驱动旋转关节 -->
+  <actuator>
+    <!-- 使用MuJoCo内置的位置控制执行器（推荐）- 内部已优化，更稳定 -->
+    <!-- <position name="rotation_actuator" joint="rotation_joint" kp="100" kv="20" forcerange="-100 100" /> -->
+    
+    <!-- 速度控制执行器 -->
+    <velocity name="rotation_velocity" joint="rotation_joint" kv="10" forcerange="-100 100" />
+
+    <!-- 可选：力矩控制执行器（用于手动PD控制） -->
+    <!-- <motor name="rotation_motor" joint="rotation_joint" forcerange="-100 100" /> -->
+  </actuator>
+  
+  <!-- 传感器：可选，用于监控关节状态 -->
+  <sensor>
+    <jointpos name="joint_position" joint="rotation_joint" />
+    <jointvel name="joint_velocity" joint="rotation_joint" />
+  </sensor>
+</mujoco>
+

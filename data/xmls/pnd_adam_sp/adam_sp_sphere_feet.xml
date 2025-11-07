@@ -175,11 +175,13 @@
                   <!-- <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.752941 0.752941 0.752941 1" mesh="toeLeft" /> -->
                   <!-- <geom size="0.12 0.05 0.01" pos="0.05 0 -0.055" type="box" rgba="0.752941 0.752941 0.752941 1" /> -->
                   <geom class="visual" material="black" mesh="toeLeft"/>
-                  <geom name="left_foot_center_collision" class="collision" type="capsule" size="0.015" fromto="-0.06 0 -0.05 0.15 0 -0.05"/> 
-                  <geom name="left_foot_fr_collision" class="collision" type="capsule" size="0.01" fromto="0.07 -0.03 -0.055 0.13 -0.03 -0.055"/> 
-                  <geom name="left_foot_fl_collision" class="collision" type="capsule" size="0.01" fromto="0.07 0.03 -0.055 0.13 0.03 -0.055"/>
-                  <geom name="left_foot_br_collision" class="collision" type="capsule" size="0.01" fromto="-0.05 -0.03 -0.055 -0.02 -0.03 -0.055"/>   
-                  <geom name="left_foot_bl_collision" class="collision" type="capsule" size="0.01" fromto="-0.05 0.025 -0.055 -0.02 0.025 -0.055"/>   
+                  <geom name="left_foot1_collision" class="foot" type="sphere" pos="-0.06 0.0 -0.055" size="0.01" />
+                  <geom name="left_foot2_collision" class="foot" type="sphere" pos="0.02 0.025 -0.055" size="0.01" />
+                  <geom name="left_foot3_collision" class="foot" type="sphere" pos="0.02 -0.022 -0.055" size="0.01" />
+                  <geom name="left_foot4_collision" class="foot" type="sphere" pos="0.155 0.0 -0.055" size="0.01" /> 
+                  <geom name="left_foot5_collision" class="foot" type="sphere" pos="0.1 -0.038 -0.055" size="0.01" />
+                  <geom name="left_foot6_collision" class="foot" type="sphere" pos="0.1 0.038 -0.055" size="0.01" />
+                  
                 </body>
               </body>
             </body>
@@ -229,11 +231,12 @@
                   <!-- <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.752941 0.752941 0.752941 1" mesh="toeRight" />
                   <geom size="0.12 0.05 0.01" pos="0.05 0 -0.055" type="box" rgba="0.752941 0.752941 0.752941 1" /> -->
                   <geom class="visual" material="black" mesh="toeRight"/>
-                  <geom name="right_foot_center_collision" class="collision" type="capsule" size="0.015" fromto="-0.06 0 -0.05 0.15 0 -0.05"/> 
-                  <geom name="right_foot_fr_collision" class="collision" type="capsule" size="0.01" fromto="0.07 -0.03 -0.055 0.13 -0.03 -0.055"/> 
-                  <geom name="right_foot_fl_collision" class="collision" type="capsule" size="0.01" fromto="0.07 0.03 -0.055 0.13 0.03 -0.055"/>
-                  <geom name="right_foot_br_collision" class="collision" type="capsule" size="0.01" fromto="-0.05 -0.025 -0.055 -0.02 -0.025 -0.055"/>   
-                  <geom name="right_foot_bl_collision" class="collision" type="capsule" size="0.01" fromto="-0.05 0.03 -0.055 -0.02 0.03 -0.055"/>   
+                   <geom name="right_foot1_collision" class="foot" type="sphere" pos="-0.06 0.0 -0.055" size="0.01" />
+                   <geom name="right_foot2_collision" class="foot" type="sphere" pos="0.02 -0.025 -0.055" size="0.01" />
+                   <geom name="right_foot3_collision" class="foot" type="sphere" pos="0.02 0.022 -0.055" size="0.01" />
+                   <geom name="right_foot4_collision" class="foot" type="sphere" pos="0.155 0.0 -0.055" size="0.01" /> 
+                   <geom name="right_foot5_collision" class="foot" type="sphere" pos="0.1 0.038 -0.055" size="0.01" />
+                   <geom name="right_foot6_collision" class="foot" type="sphere" pos="0.1 -0.038 -0.055" size="0.01" />
                 </body>
               </body>
             </body>
@@ -382,19 +385,22 @@
 
   <contact>
     <!-- the collision between left foot and floor -->
-    <pair name="left_foot_center_floor" geom1="left_foot_center_collision" geom2="floor" condim="3" friction="0.6 0.6"/>
-    <pair name="left_foot_fr_floor" geom1="left_foot_fr_collision" geom2="floor" condim="3" friction="0.6 0.6"/>
-    <pair name="left_foot_fl_floor" geom1="left_foot_fl_collision" geom2="floor" condim="3" friction="0.6 0.6"/>
-    <pair name="left_foot_br_floor" geom1="left_foot_br_collision" geom2="floor" condim="3" friction="0.6 0.6"/>
-    <pair name="left_foot_bl_floor" geom1="left_foot_bl_collision" geom2="floor" condim="3" friction="0.6 0.6"/>
+    <!-- <pair name="left_foot_floor" geom1="left_foot_collision" geom2="floor" condim="3" friction="0.6 0.6"/> -->
+    <pair name="left_foot1_floor" geom1="left_foot1_collision" geom2="floor" condim="3" friction="0.6 0.6"/>
+    <pair name="left_foot2_floor" geom1="left_foot2_collision" geom2="floor" condim="3" friction="0.6 0.6"/>
+    <pair name="left_foot3_floor" geom1="left_foot3_collision" geom2="floor" condim="3" friction="0.6 0.6"/>
+    <pair name="left_foot4_floor" geom1="left_foot4_collision" geom2="floor" condim="3" friction="0.6 0.6"/>
+    <pair name="left_foot5_floor" geom1="left_foot5_collision" geom2="floor" condim="3" friction="0.6 0.6"/>
+    <pair name="left_foot6_floor" geom1="left_foot6_collision" geom2="floor" condim="3" friction="0.6 0.6"/>
 
     <!-- the collision between right foot and floor -->
-    <pair name="right_foot_center_floor" geom1="right_foot_center_collision" geom2="floor" condim="3" friction="0.6 0.6"/>
-    <pair name="right_foot_fr_floor" geom1="right_foot_fr_collision" geom2="floor" condim="3" friction="0.6 0.6"/>
-    <pair name="right_foot_fl_floor" geom1="right_foot_fl_collision" geom2="floor" condim="3" friction="0.6 0.6"/>
-    <pair name="right_foot_br_floor" geom1="right_foot_br_collision" geom2="floor" condim="3" friction="0.6 0.6"/>
-    <pair name="right_foot_bl_floor" geom1="right_foot_bl_collision" geom2="floor" condim="3" friction="0.6 0.6"/>
-
+    <!-- <pair name="right_foot_floor" geom1="right_foot_collision" geom2="floor" condim="3" friction="0.6 0.6"/> -->
+    <pair name="right_foot1_floor" geom1="right_foot1_collision" geom2="floor" condim="3" friction="0.6 0.6"/>
+    <pair name="right_foot2_floor" geom1="right_foot2_collision" geom2="floor" condim="3" friction="0.6 0.6"/>
+    <pair name="right_foot3_floor" geom1="right_foot3_collision" geom2="floor" condim="3" friction="0.6 0.6"/>
+    <pair name="right_foot4_floor" geom1="right_foot4_collision" geom2="floor" condim="3" friction="0.6 0.6"/>
+    <pair name="right_foot5_floor" geom1="right_foot5_collision" geom2="floor" condim="3" friction="0.6 0.6"/>
+    <pair name="right_foot6_floor" geom1="right_foot6_collision" geom2="floor" condim="3" friction="0.6 0.6"/>
     <!-- the collision between left hip and floor -->
     <pair name="left_hip_floor" geom1="left_hip_collision" geom2="floor" condim="3" friction="0.6 0.6"/>
     <!-- the collision between right hip and floor -->
@@ -445,15 +451,43 @@
     <pair name="right_hand_right_thigh_down" geom1="right_hand_collision" geom2="right_thigh_down_collision" condim="1"/>
 
     <!-- the collision between left foot and right foot -->
-    <pair name="left_foot_center_right_foot_center" geom1="left_foot_center_collision" geom2="right_foot_center_collision" condim="1"/>
-    <pair name="left_foot_center_right_foot_fl" geom1="left_foot_center_collision" geom2="right_foot_fl_collision" condim="1"/>
-    <pair name="left_foot_center_right_foot_bl" geom1="left_foot_center_collision" geom2="right_foot_bl_collision" condim="1"/>
-    <pair name="left_foot_fr_right_foot_center" geom1="left_foot_fr_collision" geom2="right_foot_center_collision" condim="1"/>
-    <pair name="left_foot_fr_right_foot_fl" geom1="left_foot_fr_collision" geom2="right_foot_fl_collision" condim="1"/>
-    <pair name="left_foot_fr_right_foot_bl" geom1="left_foot_fr_collision" geom2="right_foot_bl_collision" condim="1"/>
-    <pair name="left_foot_br_right_foot_center" geom1="left_foot_br_collision" geom2="right_foot_center_collision" condim="1"/>
-    <pair name="left_foot_br_right_foot_fl" geom1="left_foot_br_collision" geom2="right_foot_fl_collision" condim="1"/>
-    <pair name="left_foot_br_right_foot_bl" geom1="left_foot_br_collision" geom2="right_foot_bl_collision" condim="1"/>
+    <!-- <pair name="left_foot_right_foot" geom1="left_foot_collision" geom2="right_foot_collision" condim="1"/> -->
+    <pair name="left_foot1_right_foot1" geom1="left_foot1_collision" geom2="right_foot1_collision" condim="1"/>
+    <pair name="left_foot1_right_foot2" geom1="left_foot1_collision" geom2="right_foot2_collision" condim="1"/>
+    <pair name="left_foot1_right_foot3" geom1="left_foot1_collision" geom2="right_foot3_collision" condim="1"/>
+    <pair name="left_foot1_right_foot4" geom1="left_foot1_collision" geom2="right_foot4_collision" condim="1"/>
+    <pair name="left_foot1_right_foot5" geom1="left_foot1_collision" geom2="right_foot5_collision" condim="1"/>
+    <pair name="left_foot1_right_foot6" geom1="left_foot1_collision" geom2="right_foot6_collision" condim="1"/>
+    <pair name="left_foot2_right_foot1" geom1="left_foot2_collision" geom2="right_foot1_collision" condim="1"/>
+    <pair name="left_foot2_right_foot2" geom1="left_foot2_collision" geom2="right_foot2_collision" condim="1"/>
+    <pair name="left_foot2_right_foot3" geom1="left_foot2_collision" geom2="right_foot3_collision" condim="1"/>
+    <pair name="left_foot2_right_foot4" geom1="left_foot2_collision" geom2="right_foot4_collision" condim="1"/>
+    <pair name="left_foot2_right_foot5" geom1="left_foot2_collision" geom2="right_foot5_collision" condim="1"/>
+    <pair name="left_foot2_right_foot6" geom1="left_foot2_collision" geom2="right_foot6_collision" condim="1"/>
+    <pair name="left_foot3_right_foot1" geom1="left_foot3_collision" geom2="right_foot1_collision" condim="1"/>
+    <pair name="left_foot3_right_foot2" geom1="left_foot3_collision" geom2="right_foot2_collision" condim="1"/>
+    <pair name="left_foot3_right_foot3" geom1="left_foot3_collision" geom2="right_foot3_collision" condim="1"/>
+    <pair name="left_foot3_right_foot4" geom1="left_foot3_collision" geom2="right_foot4_collision" condim="1"/>
+    <pair name="left_foot3_right_foot5" geom1="left_foot3_collision" geom2="right_foot5_collision" condim="1"/>
+    <pair name="left_foot3_right_foot6" geom1="left_foot3_collision" geom2="right_foot6_collision" condim="1"/>
+    <pair name="left_foot4_right_foot1" geom1="left_foot4_collision" geom2="right_foot1_collision" condim="1"/>
+    <pair name="left_foot4_right_foot2" geom1="left_foot4_collision" geom2="right_foot2_collision" condim="1"/>
+    <pair name="left_foot4_right_foot3" geom1="left_foot4_collision" geom2="right_foot3_collision" condim="1"/>
+    <pair name="left_foot4_right_foot4" geom1="left_foot4_collision" geom2="right_foot4_collision" condim="1"/>
+    <pair name="left_foot4_right_foot5" geom1="left_foot4_collision" geom2="right_foot5_collision" condim="1"/>
+    <pair name="left_foot4_right_foot6" geom1="left_foot4_collision" geom2="right_foot6_collision" condim="1"/>
+    <pair name="left_foot5_right_foot1" geom1="left_foot5_collision" geom2="right_foot1_collision" condim="1"/>
+    <pair name="left_foot5_right_foot2" geom1="left_foot5_collision" geom2="right_foot2_collision" condim="1"/>
+    <pair name="left_foot5_right_foot3" geom1="left_foot5_collision" geom2="right_foot3_collision" condim="1"/>
+    <pair name="left_foot5_right_foot4" geom1="left_foot5_collision" geom2="right_foot4_collision" condim="1"/>
+    <pair name="left_foot5_right_foot5" geom1="left_foot5_collision" geom2="right_foot5_collision" condim="1"/>
+    <pair name="left_foot5_right_foot6" geom1="left_foot5_collision" geom2="right_foot6_collision" condim="1"/>
+    <pair name="left_foot6_right_foot1" geom1="left_foot6_collision" geom2="right_foot1_collision" condim="1"/>
+    <pair name="left_foot6_right_foot2" geom1="left_foot6_collision" geom2="right_foot2_collision" condim="1"/>
+    <pair name="left_foot6_right_foot3" geom1="left_foot6_collision" geom2="right_foot3_collision" condim="1"/>
+    <pair name="left_foot6_right_foot4" geom1="left_foot6_collision" geom2="right_foot4_collision" condim="1"/>
+    <pair name="left_foot6_right_foot5" geom1="left_foot6_collision" geom2="right_foot5_collision" condim="1"/>
+    <pair name="left_foot6_right_foot6" geom1="left_foot6_collision" geom2="right_foot6_collision" condim="1"/>
     
     <!-- the collision between left shin and right shin -->
     <pair name="left_shin_up_right_shin_up" geom1="left_shin_up_collision" geom2="right_shin_up_collision" condim="1"/>
@@ -462,28 +496,37 @@
     <pair name="left_shin_down_right_shin_down" geom1="left_shin_down_collision" geom2="right_shin_down_collision" condim="1"/>
 
     <!-- the collision between left foot and right shin -->
-    <pair name="left_foot_center_right_shin_up" geom1="left_foot_center_collision" geom2="right_shin_up_collision" condim="1"/>
-    <pair name="left_foot_center_right_shin_down" geom1="left_foot_center_collision" geom2="right_shin_down_collision" condim="1"/>
-    <pair name="left_foot_fr_right_shin_up" geom1="left_foot_fr_collision" geom2="right_shin_up_collision" condim="1"/>
-    <pair name="left_foot_fr_right_shin_down" geom1="left_foot_fr_collision" geom2="right_shin_down_collision" condim="1"/>
-    <pair name="left_foot_br_right_shin_up" geom1="left_foot_br_collision" geom2="right_shin_up_collision" condim="1"/>
-    <pair name="left_foot_br_right_shin_down" geom1="left_foot_br_collision" geom2="right_shin_down_collision" condim="1"/>
-    <pair name="left_foot_fl_right_shin_up" geom1="left_foot_fl_collision" geom2="right_shin_up_collision" condim="1"/>
-    <pair name="left_foot_fl_right_shin_down" geom1="left_foot_fl_collision" geom2="right_shin_down_collision" condim="1"/>
-    <pair name="left_foot_bl_right_shin_up" geom1="left_foot_bl_collision" geom2="right_shin_up_collision" condim="1"/>
-    <pair name="left_foot_bl_right_shin_down" geom1="left_foot_bl_collision" geom2="right_shin_down_collision" condim="1"/>
+    <!-- <pair name="left_foot_right_shin_up" geom1="left_foot_collision" geom2="right_shin_up_collision" condim="1"/> -->
+    <!-- <pair name="left_foot_right_shin_down" geom1="left_foot_collision" geom2="right_shin_down_collision" condim="1"/> -->
+    <pair name="left_foot1_right_shin_up" geom1="left_foot1_collision" geom2="right_shin_up_collision" condim="1"/>
+    <pair name="left_foot1_right_shin_down" geom1="left_foot1_collision" geom2="right_shin_down_collision" condim="1"/>
+    <pair name="left_foot2_right_shin_up" geom1="left_foot2_collision" geom2="right_shin_up_collision" condim="1"/>
+    <pair name="left_foot2_right_shin_down" geom1="left_foot2_collision" geom2="right_shin_down_collision" condim="1"/>
+    <pair name="left_foot3_right_shin_up" geom1="left_foot3_collision" geom2="right_shin_up_collision" condim="1"/>
+    <pair name="left_foot3_right_shin_down" geom1="left_foot3_collision" geom2="right_shin_down_collision" condim="1"/>
+    <pair name="left_foot4_right_shin_up" geom1="left_foot4_collision" geom2="right_shin_up_collision" condim="1"/>
+    <pair name="left_foot4_right_shin_down" geom1="left_foot4_collision" geom2="right_shin_down_collision" condim="1"/>
+    <pair name="left_foot5_right_shin_up" geom1="left_foot5_collision" geom2="right_shin_up_collision" condim="1"/>
+    <pair name="left_foot5_right_shin_down" geom1="left_foot5_collision" geom2="right_shin_down_collision" condim="1"/>
+    <pair name="left_foot6_right_shin_up" geom1="left_foot6_collision" geom2="right_shin_up_collision" condim="1"/>
+    <pair name="left_foot6_right_shin_down" geom1="left_foot6_collision" geom2="right_shin_down_collision" condim="1"/>
+    
 
     <!-- the collision between right foot and left shin -->
-    <pair name="right_foot_center_left_shin_up" geom1="right_foot_center_collision" geom2="left_shin_up_collision" condim="1"/>
-    <pair name="right_foot_center_left_shin_down" geom1="right_foot_center_collision" geom2="left_shin_down_collision" condim="1"/>
-    <pair name="right_foot_fl_left_shin_up" geom1="right_foot_fl_collision" geom2="left_shin_up_collision" condim="1"/>
-    <pair name="right_foot_fl_left_shin_down" geom1="right_foot_fl_collision" geom2="left_shin_down_collision" condim="1"/>
-    <pair name="right_foot_bl_left_shin_up" geom1="right_foot_bl_collision" geom2="left_shin_up_collision" condim="1"/>
-    <pair name="right_foot_bl_left_shin_down" geom1="right_foot_bl_collision" geom2="left_shin_down_collision" condim="1"/>
-    <pair name="right_foot_fr_left_shin_up" geom1="right_foot_fr_collision" geom2="left_shin_up_collision" condim="1"/>
-    <pair name="right_foot_fr_left_shin_down" geom1="right_foot_fr_collision" geom2="left_shin_down_collision" condim="1"/>
-    <pair name="right_foot_br_left_shin_up" geom1="right_foot_br_collision" geom2="left_shin_up_collision" condim="1"/>
-    <pair name="right_foot_br_left_shin_down" geom1="right_foot_br_collision" geom2="left_shin_down_collision" condim="1"/>
+    <!-- <pair name="right_foot_left_shin_up" geom1="right_foot_collision" geom2="left_shin_up_collision" condim="1"/> -->
+    <!-- <pair name="right_foot_left_shin_down" geom1="right_foot_collision" geom2="left_shin_down_collision" condim="1"/> -->
+    <pair name="right_foot1_left_shin_up" geom1="right_foot1_collision" geom2="left_shin_up_collision" condim="1"/>
+    <pair name="right_foot1_left_shin_down" geom1="right_foot1_collision" geom2="left_shin_down_collision" condim="1"/>
+    <pair name="right_foot2_left_shin_up" geom1="right_foot2_collision" geom2="left_shin_up_collision" condim="1"/>
+    <pair name="right_foot2_left_shin_down" geom1="right_foot2_collision" geom2="left_shin_down_collision" condim="1"/>
+    <pair name="right_foot3_left_shin_up" geom1="right_foot3_collision" geom2="left_shin_up_collision" condim="1"/>
+    <pair name="right_foot3_left_shin_down" geom1="right_foot3_collision" geom2="left_shin_down_collision" condim="1"/>
+    <pair name="right_foot4_left_shin_up" geom1="right_foot4_collision" geom2="left_shin_up_collision" condim="1"/>
+    <pair name="right_foot4_left_shin_down" geom1="right_foot4_collision" geom2="left_shin_down_collision" condim="1"/>
+    <pair name="right_foot5_left_shin_up" geom1="right_foot5_collision" geom2="left_shin_up_collision" condim="1"/>
+    <pair name="right_foot5_left_shin_down" geom1="right_foot5_collision" geom2="left_shin_down_collision" condim="1"/>
+    <pair name="right_foot6_left_shin_up" geom1="right_foot6_collision" geom2="left_shin_up_collision" condim="1"/>
+    <pair name="right_foot6_left_shin_down" geom1="right_foot6_collision" geom2="left_shin_down_collision" condim="1"/>
 
 
     <!-- the collision between left hand and right hand -->

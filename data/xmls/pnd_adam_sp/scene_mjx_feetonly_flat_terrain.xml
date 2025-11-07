@@ -1,5 +1,5 @@
 <mujoco model="adam_sp scene">
-    <include file="adam_sp.xml"/>
+    <include file="adam_sp_box_feet_fix_damping_friction.xml"/>
 
     <statistic center="0 0 0.7" extent="1.2" meansize="0.04"/>
 

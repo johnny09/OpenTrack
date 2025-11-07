@@ -235,6 +235,7 @@ def convert_jax2onnx(
 @dataclass
 class Args:
     exp_name: str
+    env_name: str
     opset_version: int = 11  # ONNX opset version
 
 
@@ -242,8 +243,19 @@ def main(args: Args):
     import json
     from brax.training.agents.ppo.networks import make_ppo_networks
     from src.learning.ppo import train_ppo as ppo
-    from src.envs.g1.wrapper import wrap_fn
-    from src.envs.g1.g1_tracking_env import G1TrackingEnv, default_config
+
+    if args.env_name == "g1":
+        from src.envs.g1.wrapper import wrap_fn
+        from src.envs.g1.g1_tracking_env import (
+            G1TrackingEnv as TrackingEnv,
+            default_config,
+        )
+    elif args.env_name == "adamsp":
+        from src.envs.adamsp.wrapper import wrap_fn
+        from src.envs.adamsp.adamsp_tracking_env import (
+            AdamSPTrackingEnv as TrackingEnv,
+            default_config,
+        )
 
     ckpt_path = Path(__file__).parent / "experiments" / args.exp_name / "checkpoints"
     latest_ckpt = get_latest_ckpt(ckpt_path)
@@ -269,9 +281,9 @@ def main(args: Args):
     env_cfg.update(config["env_config"])
     policy_cfg.update(config["policy_config"])
     env_cfg.enable_randomize = False
-    env_cfg.reference_traj_config.name = {"lafan1": ["dance1_subject1"]}
+    # env_cfg.reference_traj_config.name = {"lafan1": ["dance1_subject1"]}
 
-    env = G1TrackingEnv(terrain_type=env_cfg.terrain_type, config=env_cfg)
+    env = TrackingEnv(terrain_type=env_cfg.terrain_type, config=env_cfg)
     env.prepare_trajectory(env._config.reference_traj_config.name)
 
     network_factory = functools.partial(make_ppo_networks, **policy_cfg.network_factory)
@@ -304,4 +316,3 @@ def main(args: Args):
 if __name__ == "__main__":
     args = tyro.cli(Args)
     main(args)
-

@@ -216,8 +216,6 @@ class PlayAdamSPTrackingEnv:
     def _reset_from_current_traj(self):
         qpos, qvel = self.th.get_current_traj_data_fast(self.current_traj_info)
         self.evaluation_metrics = collections.defaultdict(list)
-        print("############################3")
-        print(qpos[2])
         qpos = qpos.at[2].set(qpos[2] + 0.02)  # 需要将结果赋值回qpos
         print(qpos[2])
         self.mj_data.qpos[:] = qpos
@@ -372,8 +370,8 @@ class PlayAdamSPTrackingEnv:
         # joint
         joint_pos = self.mj_data.qpos[7:]
         joint_vel = self.mj_data.qvel[6:]
-        print("############################3")
-        print(joint_pos)
+        # print("############################3")
+        # print(joint_pos)
         # reference
         dif_joint_pos = qpos[7:] - joint_pos
         dif_joint_vel = qvel[6:] - joint_vel

@@ -7,10 +7,12 @@ os.environ["XLA_PYTHON_CLIENT_PREALLOCATE"] = "false"
 os.environ["MUJOCO_GL"] = "egl"
 
 import logging as python_logging
+
 LOGGER = python_logging.getLogger()
 LOGGER.setLevel(python_logging.INFO)
 
 from absl import logging
+
 logging.set_verbosity(logging.INFO)
 
 import functools
@@ -76,8 +78,16 @@ def transfer_weights(jax_params: Mapping, torch_model: torch.nn.Module):
             layer = torch_model.conv[int(name.split("_")[-1])]
         else:
             raise ValueError(f"Unexpected parameter name: {name}")
-        print(f"Transfer {name}...", layer.weight.shape, layer.bias.shape, params["kernel"].shape, params["bias"].shape)
-        layer.weight.data[:] = torch.tensor(np.array(params["kernel"]).T, dtype=torch.float32)
+        print(
+            f"Transfer {name}...",
+            layer.weight.shape,
+            layer.bias.shape,
+            params["kernel"].shape,
+            params["bias"].shape,
+        )
+        layer.weight.data[:] = torch.tensor(
+            np.array(params["kernel"]).T, dtype=torch.float32
+        )
         layer.bias.data[:] = torch.tensor(np.array(params["bias"]), dtype=torch.float32)
         idx += 1
     logging.info("Weights transferred (JAX → Torch) successfully.")
@@ -100,7 +110,10 @@ def convert_jax2torch(
     activation="swish",
 ):
     # 1 » generate a deterministic random observation batch
-    rand_obs = {key: np.random.randn(1, obs_size[key][0]).astype(np.float32) for key in obs_size.keys()}
+    rand_obs = {
+        key: np.random.randn(1, obs_size[key][0]).astype(np.float32)
+        for key in obs_size.keys()
+    }
 
     # 2 » JAX prediction
     jax_pred, _ = inference_fn(rand_obs, jax.random.PRNGKey(0))
@@ -110,14 +123,18 @@ def convert_jax2torch(
 
     # only build policy network [1]
     obs_dim = obs_size[policy_params.policy_obs_key][0]
-    layer_sizes = [obs_dim] + list(policy_params.policy_hidden_layer_sizes) + [action_size * 2]
+    layer_sizes = (
+        [obs_dim] + list(policy_params.policy_hidden_layer_sizes) + [action_size * 2]
+    )
     torch_model = MLP(layer_sizes, activation=activation, split=True)
     transfer_weights(jax_params[1]["params"], torch_model)
     torch_model.eval()
 
     # 4 » Torch prediction
     with torch.no_grad():
-        torch_pred = torch_model(torch.from_numpy(rand_obs[policy_params.policy_obs_key])).numpy()[0]
+        torch_pred = torch_model(
+            torch.from_numpy(rand_obs[policy_params.policy_obs_key])
+        ).numpy()[0]
 
     scripted_model = torch.jit.script(torch_model)
     scripted_model.save(output_path)
@@ -139,14 +156,28 @@ def convert_jax2torch(
 @dataclass
 class Args:
     exp_name: str
+    robot: str  # choose from PndAdamSP, UnitreeG1
 
 
 def main(args: Args):
     import json
     from brax.training.agents.ppo.networks import make_ppo_networks
     from src.learning.ppo import train_ppo as ppo
-    from src.envs.g1.wrapper import wrap_fn
-    from src.envs.g1.g1_tracking_env import G1TrackingEnv, default_config
+
+    if args.robot == "PndAdamSP":
+        from src.envs.adamsp.adamsp_tracking_env import (
+            AdamSPTrackingEnv as TrackingEnv,
+            default_config,
+        )
+        from src.envs.adamsp.wrapper import wrap_fn
+    elif args.robot == "UnitreeG1":
+        from src.envs.g1.g1_tracking_env import (
+            G1TrackingEnv as TrackingEnv,
+            default_config,
+        )
+        from src.envs.g1.wrapper import wrap_fn
+    else:
+        raise ValueError(f"Unknown robot: {args.robot}")
 
     ckpt_path = Path(__file__).parent / "experiments" / args.exp_name / "checkpoints"
     latest_ckpt = get_latest_ckpt(ckpt_path)
@@ -160,15 +191,21 @@ def main(args: Args):
     env_cfg = task_cfg.env_config
     policy_cfg = task_cfg.policy_config
 
-    config_path = Path(__file__).parent / "experiments" / args.exp_name / "checkpoints" / "config.json"
+    config_path = (
+        Path(__file__).parent
+        / "experiments"
+        / args.exp_name
+        / "checkpoints"
+        / "config.json"
+    )
     with open(config_path, "r") as f:
         config = json.load(f)
     env_cfg.update(config["env_config"])
     policy_cfg.update(config["policy_config"])
     env_cfg.enable_randomize = False
-    env_cfg.reference_traj_config.name = {"lafan1": ["dance1_subject1"]}
+    # env_cfg.reference_traj_config.name = {"lafan1": ["dance1_subject1"]}
 
-    env = G1TrackingEnv(terrain_type=env_cfg.terrain_type, config=env_cfg)
+    env = TrackingEnv(terrain_type=env_cfg.terrain_type, config=env_cfg)
     env.prepare_trajectory(env._config.reference_traj_config.name)
 
     network_factory = functools.partial(make_ppo_networks, **policy_cfg.network_factory)

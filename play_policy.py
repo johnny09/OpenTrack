@@ -128,7 +128,7 @@ def play(args: Args):
                 .numpy()
             )
         state = env.step(state, action)
-        if i < 0.9 * len_traj:
+        if i < 0.15 * len_traj:
             # 存储 joint_torque
             joint_torque = np.array(state.info["joint_torque"])
             if joint_torque.ndim == 1:  # 一组

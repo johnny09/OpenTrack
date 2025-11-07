@@ -49,18 +49,22 @@ HAND_SITES = [
 ]
 
 LEFT_FEET_GEOMS = [
-    "left_foot_center_collision",
-    "left_foot_fr_collision",
-    "left_foot_fl_collision",
-    "left_foot_br_collision",
-    "left_foot_bl_collision",
+    # "left_foot1_collision",
+    # "left_foot2_collision",
+    # "left_foot3_collision",
+    # "left_foot4_collision",
+    # "left_foot5_collision",
+    # "left_foot6_collision",
+    "left_foot_collision",
 ]
 RIGHT_FEET_GEOMS = [
-    "right_foot_center_collision",
-    "right_foot_fr_collision",
-    "right_foot_fl_collision",
-    "right_foot_br_collision",
-    "right_foot_bl_collision",
+    # "right_foot1_collision",
+    # "right_foot2_collision",
+    # "right_foot3_collision",
+    # "right_foot4_collision",
+    # "right_foot5_collision",
+    # "right_foot6_collision",
+    "right_foot_collision",
 ]
 FEET_GEOMS = LEFT_FEET_GEOMS + RIGHT_FEET_GEOMS
 
@@ -315,78 +319,78 @@ DEFAULT_QPOS = np.float32(
 KPs = np.float32(
     [
         # left leg
-        100,
-        100,
-        100,
-        200,
-        80,
-        20,
+        305.0,
+        700.0,
+        405,
+        305.0,
+        20.0,
+        20.0,
         # right leg
-        100,
-        100,
-        100,
-        200,
-        80,
-        20,
+        305.0,
+        700.0,
+        405,
+        305.0,
+        20.0,
+        20.0,
         # waist
-        300,
-        300,
-        300,
+        405.0,
+        405.0,
+        205.0,
         # left arm
-        90,
-        60,
-        20,
-        60,
-        10,
-        10,
-        10,
+        18.0,
+        9.0,
+        9.0,
+        9.0,
+        9.0,
+        9.0,
+        9.0,
         # right arm
-        90,
-        60,
-        20,
-        60,
-        10,
-        10,
-        10,
+        18.0,
+        9.0,
+        9.0,
+        9.0,
+        9.0,
+        9.0,
+        9.0,
     ]
 )
 
 KDs = np.float32(
     [
         # left leg
-        2,
-        2,
-        2,
-        4,
-        2,
-        1,
+        6.1,
+        30,
+        6.1,
+        6.1,
+        2.5,
+        2.5,
         # right leg
-        2,
-        2,
-        2,
-        4,
-        2,
-        1,
+        6.1,
+        30,
+        6.1,
+        6.1,
+        2.5,
+        2.5,
         # waist
-        10,
-        10,
-        10,
+        6.1,
+        6.1,
+        4.1,
         # left arm
-        2,
-        2,
-        1,
-        1,
-        1,
-        1,
-        1,
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        0.9,
         # right arm
-        2,
-        2,
-        1,
-        1,
-        1,
-        1,
-        1,
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        0.9,
+        0.9,
     ]
 )
 
@@ -452,7 +456,7 @@ SHOULDER_LINKs = ["left_shoulder_pitch_link", "right_shoulder_pitch_link"]
 
 
 LAFAN1_DATASETS = [
-    # "run1_subject2_extended",
+    # "run1_subject2_extended",  # before 15%
     # "run1_subject5_extended",
     # "run2_subject1_extended",
     # "run2_subject4_extended",
@@ -460,7 +464,7 @@ LAFAN1_DATASETS = [
     # "walk1_subject2_extended",
     # "walk1_subject5_extended",
     # "walk2_subject1_extended",
-    # "walk2_subject3_extended",
+    # "walk2_subject3_extended",  # ok
     # "walk2_subject4_extended",
     # "walk3_subject1_extended",
     # "walk3_subject2_extended",
@@ -468,12 +472,12 @@ LAFAN1_DATASETS = [
     # "walk3_subject4_extended",
     # "walk3_subject5_extended",
     # "walk4_subject1_extended",
-    "dance1_subject1_extended",
-    "dance1_subject2_extended",
-    "dance1_subject3_extended",  # ok
-    "dance2_subject1_extended",
-    "dance2_subject2_extended",
-    "dance2_subject3_extended",
-    "dance2_subject4_extended",
-    "dance2_subject5_extended",  # ok
+    # "dance1_subject1_extended",
+    # "dance1_subject2_extended",
+    # "dance1_subject3_extended",  # ok
+    # "dance2_subject1_extended",
+    # "dance2_subject2_extended",
+    # "dance2_subject3_extended",
+    # "dance2_subject4_extended",
+    # "dance2_subject5_extended",  # ok
 ]
