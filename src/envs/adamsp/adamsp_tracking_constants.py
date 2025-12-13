@@ -395,12 +395,12 @@ LAFAN1_DATASETS = [
     # "walk3_subject4_extended",
     # "walk3_subject5_extended",
     # "walk4_subject1_extended",
-    # "dance1_subject1_extended",
+    "dance1_subject1_extended",
     "dance1_subject2_extended",  # ok
     "dance1_subject3_extended",  # ok
-    # "dance2_subject1_extended",
-    # "dance2_subject2_extended",
-    # "dance2_subject3_extended",
-    # "dance2_subject4_extended",
-    # "dance2_subject5_extended",  # ok
+    "dance2_subject1_extended",
+    "dance2_subject2_extended",
+    "dance2_subject3_extended",
+    "dance2_subject4_extended",
+    "dance2_subject5_extended",  # ok
 ]

@@ -1,3 +1,5 @@
+import numpy as np
+
 motor_rotor_armature = {
     "PND-130-92-P": 2.74 * 10**-3,
     "PND-130-92-S": 2.74 * 10**-3,
@@ -42,15 +44,29 @@ joint_gear_ratio = {
     "waist_yaw": 51,
 }
 
+# get joint armature
+joint_armature = {}
 print("joint_armature:")
 for name in joint_actuator_type:
-    joint_armature = (
+    joint_armature[name] = (
         motor_rotor_armature[joint_actuator_type[name]] * joint_gear_ratio[name] ** 2
     )
 
-    print(f"{name}: {joint_armature}")
+    print(f"{name}: {joint_armature[name]}")
 
+# get joint torque limit
+joint_torque_limit = {}
 print("joint_torque_limit:")
 for name in joint_actuator_type:
-    joint_torque_limit = actuator_torque_limit[joint_actuator_type[name]]
-    print(f"{name}: {joint_torque_limit}")
+    joint_torque_limit[name] = actuator_torque_limit[joint_actuator_type[name]]
+    print(f"{name}: {joint_torque_limit[name]}")
+
+# get Kp and Kd
+omega = 2 * np.pi * 10
+damping_ratio = 2.0
+
+for name in joint_actuator_type:
+    I = joint_armature[name]
+    kp = I * omega**2
+    kd = 2 * I * damping_ratio * omega
+    print(f"{name}: kp = {kp}, kd = {kd}")
