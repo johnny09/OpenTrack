@@ -28,6 +28,9 @@ from brax.training.agents.ppo.networks import make_ppo_networks
 
 from src.learning.ppo import train_ppo as ppo
 
+
+import shutil
+
 # from src.envs.g1.g1_tracking_env import G1TrackingEnv, default_config
 # from src.envs.g1.wrapper import wrap_fn
 # from src.envs.g1.randomize import domain_randomize_model, domain_randomize_terrain
@@ -164,6 +167,17 @@ def train(args: Args):
     wandb.config.update(task_cfg.to_dict())
     config_path = ckpt_path / "config.json"
     config_path.write_text(task_cfg.to_json_best_effort(indent=4))
+
+    # copy tracking_constants.py to experiments/exp_name/tracking_constants.py
+    shutil.copy(
+        "src/envs/adamsp/adamsp_tracking_constants.py",
+        f"{ckpt_path}/adamsp_tracking_constants.py",
+    )
+    # copy mujoco model to experiments/exp_name/mujoco_model.xml
+    shutil.copy(
+        "data/xmls/pnd_adam_sp/scene_mjx_feetonly_flat_terrain.xml",
+        f"{ckpt_path}/scene_mjx_feetonly_flat_terrain.xml",
+    )
 
     train_fn = functools.partial(ppo.train, **policy_params)
     times = [time.monotonic()]

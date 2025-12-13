@@ -26,8 +26,8 @@ class State:
 
 
 class PlayAdamSPTrackingEnv:
-    mj_model: mujoco.MjModel
-    mj_data: mujoco.MjData
+    # mj_model: mujoco.MjModel
+    # mj_data: mujoco.MjData
 
     def __init__(
         self,
@@ -142,8 +142,8 @@ class PlayAdamSPTrackingEnv:
             (self.lower_body_ids, self.upper_body_ids)
         )  # link of id 0 is world!
 
-        self._kps = np.array(consts.KPs)
-        self._kds = np.array(consts.KDs)
+        # self._kps = np.array(consts.KPs)
+        # self._kds = np.array(consts.KDs)
         self._lowers, self._uppers = self.mj_model.jnt_range[1:].T
         c = (self._lowers + self._uppers) / 2
         r = self._uppers - self._lowers
@@ -258,15 +258,16 @@ class PlayAdamSPTrackingEnv:
 
         if self.play_ref_motion:
             qpos, qvel = self.th.get_current_traj_data_fast(state.info["traj_info"])
+
             self.mj_data.qpos[:] = qpos
             self.mj_data.qvel[:] = qvel
             mujoco.mj_forward(self.mj_model, self.mj_data)
         else:
             qpos, qvel = self.th.get_current_traj_data_fast(state.info["traj_info"])
-
             self.ref_mj_data.qpos[:] = qpos
             self.ref_mj_data.qvel[:] = qvel
-            mujoco.mj_forward(self.mj_model, self.ref_mj_data)
+            # print(state.info["step"], ":", qpos)
+            mujoco.mj_forward(self.mj_model, self.ref_mj_data)  #
 
             lower_motor_targets = (
                 qpos[7:][self.action_joint_ids] + action * self._config.action_scale
@@ -329,6 +330,7 @@ class PlayAdamSPTrackingEnv:
             self.current_traj_info = state.info["traj_info"]
             qpos, qvel = self.th.get_current_traj_data_fast(state.info["traj_info"])
             obs, history = self.get_obs(qpos, qvel, state.info)
+            # print(state.info["step"])
 
             if self._config.history_len > 0:
                 obs["history_state"] = np.concatenate(
@@ -355,6 +357,7 @@ class PlayAdamSPTrackingEnv:
         # sleep to wait for the next step
         if self.use_viewer:
             time_until_next_step = self.dt - (time.time() - step_start)
+            # print("time_until_next_step", time_until_next_step)
             if time_until_next_step > 0:
                 time.sleep(time_until_next_step)
 
@@ -379,7 +382,6 @@ class PlayAdamSPTrackingEnv:
         traj_root_rot_mat = quat_to_mat(qpos[3:7])
 
         ref_feet_height = self.ref_mj_data.site_xpos[self._feet_all_site_id, 2]
-
         state_dict = {
             "gyro_pelvis": gyro_pelvis * self._config.obs_scales_config.joint_vel,
             "gvec_pelvis": gvec_pelvis,
@@ -395,6 +397,10 @@ class PlayAdamSPTrackingEnv:
             * self._config.obs_scales_config.joint_vel,
             "ref_root_angvel": qvel[3:6] * self._config.obs_scales_config.joint_vel,
         }
+        # print("ref_feet_height:", state_dict["ref_feet_height"])
+        # print("ref_root_height:", state_dict["ref_root_height"])
+        # print("ref_root_linvel:", state_dict["ref_root_linvel"])
+        # print("ref_root_angvel:", state_dict["ref_root_angvel"])
 
         state = np.hstack([state_dict[k] for k in self._config.obs_keys])
         history = np.hstack([state_dict[k] for k in self._config.history_keys])

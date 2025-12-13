@@ -47,7 +47,15 @@ class State:
 
 
 def get_latest_ckpt(path: Path) -> Path | None:
-    ckpts = [ckpt for ckpt in path.glob("*") if not ckpt.name.endswith(".json")]
+    ckpts = [
+        ckpt
+        for ckpt in path.glob("*")
+        if not (
+            ckpt.name.endswith(".json")
+            or ckpt.name.endswith(".py")
+            or ckpt.name.endswith(".xml")
+        )
+    ]
     ckpts.sort(key=lambda x: int(x.name))
     return ckpts[-1] if ckpts else None
 
@@ -128,24 +136,25 @@ def play(args: Args):
                 .numpy()
             )
         state = env.step(state, action)
-        if i < 0.15 * len_traj:
-            # 存储 joint_torque
-            joint_torque = np.array(state.info["joint_torque"])
-            if joint_torque.ndim == 1:  # 一组
-                saved_joint_torque.append(joint_torque)
-            else:
-                for jt in joint_torque:
-                    saved_joint_torque.append(jt)
+        if i < 0.5 * len_traj:
+            if not args.play_ref_motion:
+                # 存储 joint_torque
+                joint_torque = np.array(state.info["joint_torque"])
+                if joint_torque.ndim == 1:  # 一组
+                    saved_joint_torque.append(joint_torque)
+                else:
+                    for jt in joint_torque:
+                        saved_joint_torque.append(jt)
 
-            # 存储 joint_velocity
-            joint_velocity = np.array(state.info["joint_velocity"])
-            if "saved_joint_velocity" not in locals():
-                saved_joint_velocity = []
-            if joint_velocity.ndim == 1:
-                saved_joint_velocity.append(joint_velocity)
-            else:
-                for jv in joint_velocity:
-                    saved_joint_velocity.append(jv)
+                # 存储 joint_velocity
+                joint_velocity = np.array(state.info["joint_velocity"])
+                if "saved_joint_velocity" not in locals():
+                    saved_joint_velocity = []
+                if joint_velocity.ndim == 1:
+                    saved_joint_velocity.append(joint_velocity)
+                else:
+                    for jv in joint_velocity:
+                        saved_joint_velocity.append(jv)
         else:
             import matplotlib.pyplot as plt
 

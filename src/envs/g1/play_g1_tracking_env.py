@@ -96,30 +96,52 @@ class PlayG1TrackingEnv:
         self._floor_geom_id = self.mj_model.geom("floor").id
         self._torso_imu_site_id = self.mj_model.site("imu_in_torso").id
         self._pelvis_imu_site_id = self.mj_model.site("imu_in_pelvis").id
-        self._feet_geom_id = np.array([self.mj_model.geom(name).id for name in consts.FEET_GEOMS])
-        self._feet_site_id = np.array([self.mj_model.site(name).id for name in consts.FEET_SITES])
-        self._feet_all_site_id = np.array([self.mj_model.site(name).id for name in consts.FEET_ALL_SITES])
-        self._hands_site_id = np.array([self.mj_model.site(name).id for name in consts.HAND_SITES])
+        self._feet_geom_id = np.array(
+            [self.mj_model.geom(name).id for name in consts.FEET_GEOMS]
+        )
+        self._feet_site_id = np.array(
+            [self.mj_model.site(name).id for name in consts.FEET_SITES]
+        )
+        self._feet_all_site_id = np.array(
+            [self.mj_model.site(name).id for name in consts.FEET_ALL_SITES]
+        )
+        self._hands_site_id = np.array(
+            [self.mj_model.site(name).id for name in consts.HAND_SITES]
+        )
 
         foot_linvel_sensor_adr = []
         for site in consts.FEET_SITES:
             sensor_id = self.mj_model.sensor(f"{site}_global_linvel").id
             sensor_adr = self.mj_model.sensor_adr[sensor_id]
             sensor_dim = self.mj_model.sensor_dim[sensor_id]
-            foot_linvel_sensor_adr.append(list(range(sensor_adr, sensor_adr + sensor_dim)))
+            foot_linvel_sensor_adr.append(
+                list(range(sensor_adr, sensor_adr + sensor_dim))
+            )
         self._foot_linvel_sensor_adr = np.array(foot_linvel_sensor_adr)
 
         self.body_id_pelvis = self.mj_model.body("pelvis").id
         self.body_id_torso = self.mj_model.body("torso_link").id
         self.body_names_left_leg = ["left_knee_link", "left_ankle_roll_link"]
-        self.body_ids_left_leg = [self.mj_model.body(n).id for n in self.body_names_left_leg]
+        self.body_ids_left_leg = [
+            self.mj_model.body(n).id for n in self.body_names_left_leg
+        ]
         self.body_names_right_leg = ["right_knee_link", "right_ankle_roll_link"]
-        self.body_ids_right_leg = [self.mj_model.body(n).id for n in self.body_names_right_leg]
-        self.upper_body_ids = np.array([self.mj_model.body(n).id for n in consts.UPPER_BODY_LINKs])
-        self.lower_body_ids = np.array([self.mj_model.body(n).id for n in consts.LOWER_BODY_LINKs])
-        self.upper_body_joints = np.array([self.mj_model.joint(n).id for n in consts.UPPER_BODY_JOINTs])
+        self.body_ids_right_leg = [
+            self.mj_model.body(n).id for n in self.body_names_right_leg
+        ]
+        self.upper_body_ids = np.array(
+            [self.mj_model.body(n).id for n in consts.UPPER_BODY_LINKs]
+        )
+        self.lower_body_ids = np.array(
+            [self.mj_model.body(n).id for n in consts.LOWER_BODY_LINKs]
+        )
+        self.upper_body_joints = np.array(
+            [self.mj_model.joint(n).id for n in consts.UPPER_BODY_JOINTs]
+        )
         self.feet_ids = np.array([self.mj_model.body(n).id for n in consts.FEET_LINKs])
-        self.valid_body_ids = np.concatenate((self.lower_body_ids, self.upper_body_ids))  # link of id 0 is world!
+        self.valid_body_ids = np.concatenate(
+            (self.lower_body_ids, self.upper_body_ids)
+        )  # link of id 0 is world!
 
         self._kps = np.array(consts.KPs)
         self._kds = np.array(consts.KDs)
@@ -136,7 +158,10 @@ class PlayG1TrackingEnv:
         else:
             self._th_params = {
                 "random_start": False,
-                "fixed_start_conf": [0, self._config.reference_traj_config.fixed_start_frame],
+                "fixed_start_conf": [
+                    0,
+                    self._config.reference_traj_config.fixed_start_frame,
+                ],
             }
         self._data = mujoco.MjData(self.mj_model)
 
@@ -155,7 +180,9 @@ class PlayG1TrackingEnv:
 
     def reset(self):
         # reset the trajectory handler
-        self.current_traj_info = TrajCarry(key=jax.random.PRNGKey(123), traj_state=self.th.init_state())
+        self.current_traj_info = TrajCarry(
+            key=jax.random.PRNGKey(123), traj_state=self.th.init_state()
+        )
         self.current_traj_info = self.th.reset_state(self.current_traj_info)
 
         # reset the simulator from the current trajectory
@@ -214,8 +241,12 @@ class PlayG1TrackingEnv:
         # history
         if self._config.history_len > 0:
             _, init_history = self.get_obs(init_qpos, init_qvel, info)
-            init_history_action = np.concatenate([init_history, info["last_motor_targets"]], axis=0)
-            obs["history_state"] = np.stack([init_history_action] * self._config.history_len, axis=0).flatten()
+            init_history_action = np.concatenate(
+                [init_history, info["last_motor_targets"]], axis=0
+            )
+            obs["history_state"] = np.stack(
+                [init_history_action] * self._config.history_len, axis=0
+            ).flatten()
             info["current_history"] = history
 
         return obs, info
@@ -234,9 +265,12 @@ class PlayG1TrackingEnv:
 
             self.ref_mj_data.qpos[:] = qpos
             self.ref_mj_data.qvel[:] = qvel
+            
             mujoco.mj_forward(self.mj_model, self.ref_mj_data)
 
-            lower_motor_targets = qpos[7:][self.action_joint_ids] + action * self._config.action_scale
+            lower_motor_targets = (
+                qpos[7:][self.action_joint_ids] + action * self._config.action_scale
+            )
             motor_targets = self._default_qpos.copy()
             motor_targets[self.action_joint_ids] = lower_motor_targets
             state.info["last_motor_targets"] = motor_targets.copy()
@@ -260,10 +294,15 @@ class PlayG1TrackingEnv:
             else:
                 self.writer.append_data(pixels)
 
-        state.info["traj_info"] = self.th.update_state(state.info["traj_info"], backend=np)
+        state.info["traj_info"] = self.th.update_state(
+            state.info["traj_info"], backend=np
+        )
 
         # trajectory change, reset the environment
-        if state.info["traj_info"].traj_state.traj_no != self.current_traj_info.traj_state.traj_no:
+        if (
+            state.info["traj_info"].traj_state.traj_no
+            != self.current_traj_info.traj_state.traj_no
+        ):
             self.current_traj_info = state.info["traj_info"]
             obs, info = self._reset_from_current_traj()
             state.info = info
@@ -286,10 +325,16 @@ class PlayG1TrackingEnv:
             if self._config.history_len > 0:
                 obs["history_state"] = np.concatenate(
                     [
-                        state.obs["history_state"].reshape(self._config.history_len, -1)[1:],
-                        np.concatenate([state.info["current_history"], state.info["last_motor_targets"]], axis=0)[
-                            None, :
-                        ],
+                        state.obs["history_state"].reshape(
+                            self._config.history_len, -1
+                        )[1:],
+                        np.concatenate(
+                            [
+                                state.info["current_history"],
+                                state.info["last_motor_targets"],
+                            ],
+                            axis=0,
+                        )[None, :],
                     ],
                     axis=0,
                 ).flatten()
@@ -310,7 +355,9 @@ class PlayG1TrackingEnv:
     def get_obs(self, qpos, qvel, info):
         # pose
         gyro_pelvis = self.get_sensor_data("gyro_pelvis")
-        gvec_pelvis = self.mj_data.site_xmat[self._pelvis_imu_site_id].reshape(3, 3).T @ np.array([0, 0, -1])
+        gvec_pelvis = self.mj_data.site_xmat[self._pelvis_imu_site_id].reshape(
+            3, 3
+        ).T @ np.array([0, 0, -1])
 
         # joint
         joint_pos = self.mj_data.qpos[7:]
@@ -328,13 +375,15 @@ class PlayG1TrackingEnv:
             "gyro_pelvis": gyro_pelvis * self._config.obs_scales_config.joint_vel,
             "gvec_pelvis": gvec_pelvis,
             "joint_pos": (joint_pos - self._default_qpos)[self.obs_joint_ids],
-            "joint_vel": joint_vel[self.obs_joint_ids] * self._config.obs_scales_config.joint_vel,
+            "joint_vel": joint_vel[self.obs_joint_ids]
+            * self._config.obs_scales_config.joint_vel,
             "last_motor_targets": info["last_motor_targets"],
             "dif_joint_pos": dif_joint_pos,
             "dif_joint_vel": dif_joint_vel * self._config.obs_scales_config.joint_vel,
             "ref_feet_height": ref_feet_height,
             "ref_root_height": qpos[2],
-            "ref_root_linvel": (traj_root_rot_mat.T @ qvel[:3]) * self._config.obs_scales_config.joint_vel,
+            "ref_root_linvel": (traj_root_rot_mat.T @ qvel[:3])
+            * self._config.obs_scales_config.joint_vel,
             "ref_root_angvel": qvel[3:6] * self._config.obs_scales_config.joint_vel,
         }
 
@@ -345,7 +394,9 @@ class PlayG1TrackingEnv:
 
     def load_trajectory(self, traj: Trajectory = None, warn: bool = True) -> None:
         th_params = self._th_params if self._th_params is not None else {}
-        self.th = TrajectoryHandler(model=self.mj_model, warn=warn, traj=traj, control_dt=self.dt, **th_params)
+        self.th = TrajectoryHandler(
+            model=self.mj_model, warn=warn, traj=traj, control_dt=self.dt, **th_params
+        )
 
     def prepare_trajectory(self, dataset_dict: Dict[str, List[str]]) -> Trajectory:
         self.ref_traj_names = []
@@ -359,9 +410,15 @@ class PlayG1TrackingEnv:
                 traj = Trajectory.load(traj_path, backend=np)
 
                 # recalculate velocity
-                traj = recalculate_traj_angular_velocity(traj, frequency=1.0 / self.dt, backend=np)
-                traj = recalculate_traj_linear_velocity(traj, frequency=1.0 / self.dt, backend=np)
-                traj = recalculate_traj_joint_velocity(traj, frequency=1.0 / self.dt, backend=np)
+                traj = recalculate_traj_angular_velocity(
+                    traj, frequency=1.0 / self.dt, backend=np
+                )
+                traj = recalculate_traj_linear_velocity(
+                    traj, frequency=1.0 / self.dt, backend=np
+                )
+                traj = recalculate_traj_joint_velocity(
+                    traj, frequency=1.0 / self.dt, backend=np
+                )
                 all_trajectories.append(traj)
                 self.ref_traj_names.append([dataset_name, t_name])
 
@@ -371,7 +428,9 @@ class PlayG1TrackingEnv:
         else:
             traj_datas = [t.data for t in all_trajectories]
             traj_infos = [t.info for t in all_trajectories]
-            traj_data, traj_info = TrajectoryData.concatenate(traj_datas, traj_infos, backend=np)
+            traj_data, traj_info = TrajectoryData.concatenate(
+                traj_datas, traj_infos, backend=np
+            )
             trajectory = Trajectory(traj_info, traj_data)
 
         # load trajectory again to ensure the latest transformed trajectories is loaded

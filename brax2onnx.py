@@ -96,7 +96,15 @@ def transfer_weights(jax_params: Mapping, torch_model: torch.nn.Module):
 
 
 def get_latest_ckpt(path: Path) -> Path | None:
-    ckpts = [ckpt for ckpt in path.glob("*") if not ckpt.name.endswith(".json")]
+    ckpts = [
+        ckpt
+        for ckpt in path.glob("*")
+        if not (
+            ckpt.name.endswith(".json")
+            or ckpt.name.endswith(".py")
+            or ckpt.name.endswith(".xml")
+        )
+    ]
     ckpts.sort(key=lambda x: int(x.name))
     return ckpts[-1] if ckpts else None
 

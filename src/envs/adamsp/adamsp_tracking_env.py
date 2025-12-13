@@ -306,8 +306,8 @@ class AdamSPTrackingEnv(adamsp_base.AdamSPEnv):
         self._default_qpos = jp.array(consts.DEFAULT_QPOS[7:])
 
         # Note: First joint is freejoint.
-        self._kps = jp.array(consts.KPs)
-        self._kds = jp.array(consts.KDs)
+        # self._kps = jp.array(consts.KPs)
+        # self._kds = jp.array(consts.KDs)
         self._lowers, self._uppers = self.mj_model.jnt_range[1:].T
         c = (self._lowers + self._uppers) / 2
         r = self._uppers - self._lowers
