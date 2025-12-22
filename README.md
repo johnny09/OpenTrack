@@ -27,7 +27,7 @@ This repository is the official implementation of OpenTrack, an open-source huma
    pip install -r requirements.txt
    ```
 
-5. Download the [mocap data](https://huggingface.co/datasets/robfiras/loco-mujoco-datasets/tree/main/Lafan1/mocap/UnitreeG1) and put them under `data/mocap/`. Thanks for the retargeting motions of LAFAN1 dataset from [LocoMuJoCo](https://github.com/robfiras/loco-mujoco/)!
+3. Download the [mocap data](https://huggingface.co/datasets/johnny095212/any2track_datasets/tree/main/PND/adam_sp/lafan1) and put them under `data/mocap/`.
 
    The file structure should be like:
 
@@ -37,7 +37,7 @@ This repository is the official implementation of OpenTrack, an open-source huma
       |- ...
    |-- mocap
       |-- lafan1
-         |-- UnitreeG1
+         |-- PndAdamSP
                |-- dance1_subject1.npz
                |--- ...
    ```
