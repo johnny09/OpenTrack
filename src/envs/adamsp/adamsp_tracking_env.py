@@ -455,9 +455,8 @@ class AdamSPTrackingEnv(adamsp_base.AdamSPEnv):
             trajectory_data, carry
         )
 
-        # raise the root height by 0.02m to avoid init collision between the feet and the floor
         init_traj_data = init_traj_data.replace(
-            qpos=init_traj_data.qpos.at[2].set(init_traj_data.qpos[2] + 0.02)
+            qpos=init_traj_data.qpos.at[2].set(init_traj_data.qpos[2])
         )
 
         data = mjx_env.init(

@@ -201,11 +201,23 @@ class PlayAdamSPTrackingEnv:
                 fps=50,
             )
 
-            self.renderer.update_scene(self.mj_data, camera=0)
+            robot_pos = self.mj_data.qpos[:3]
+            cam = mujoco.MjvCamera()
+            cam.lookat[:] = robot_pos
+            cam.distance = 4.0
+            cam.azimuth = 135
+            cam.elevation = -15
+            self.renderer.update_scene(self.mj_data, cam)
             pixels = self.renderer.render()
 
             if not self.play_ref_motion:
-                self.ref_renderer.update_scene(self.ref_mj_data, camera=0)
+                ref_robot_pos = self.ref_mj_data.qpos[:3]
+                ref_cam = mujoco.MjvCamera()
+                ref_cam.lookat[:] = ref_robot_pos
+                ref_cam.distance = 4.0
+                ref_cam.azimuth = 135
+                ref_cam.elevation = -15
+                self.ref_renderer.update_scene(self.ref_mj_data, ref_cam)
                 ref_pixels = self.ref_renderer.render()
                 self.writer.append_data(np.concatenate([pixels, ref_pixels], axis=1))
             else:
@@ -293,11 +305,23 @@ class PlayAdamSPTrackingEnv:
             self.viewer.sync()
 
         if self.use_renderer:
-            self.renderer.update_scene(self.mj_data, camera=0)
+            robot_pos = self.mj_data.qpos[:3]
+            cam = mujoco.MjvCamera()
+            cam.lookat[:] = robot_pos
+            cam.distance = 4.0
+            cam.azimuth = 135
+            cam.elevation = -15
+            self.renderer.update_scene(self.mj_data, cam)
             pixels = self.renderer.render()
 
             if not self.play_ref_motion:
-                self.ref_renderer.update_scene(self.ref_mj_data, camera=0)
+                ref_robot_pos = self.ref_mj_data.qpos[:3]
+                ref_cam = mujoco.MjvCamera()
+                ref_cam.lookat[:] = ref_robot_pos
+                ref_cam.distance = 4.0
+                ref_cam.azimuth = 135
+                ref_cam.elevation = -15
+                self.ref_renderer.update_scene(self.ref_mj_data, ref_cam)
                 ref_pixels = self.ref_renderer.render()
                 self.writer.append_data(np.concatenate([pixels, ref_pixels], axis=1))
             else:

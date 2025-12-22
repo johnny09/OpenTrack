@@ -103,16 +103,16 @@ RESTRICTED_JOINT_RANGE = (
     (-2.583, 2.583),  # shoulderYaw_Left
     (-2.496, 0.209),  # elbow_Left
     (-2.67, 2.67),  # wristYaw_Left
-    (-0.5, 0.5),  # wristPitch_Left
-    (-0.5, 0.5),  # wristRoll_Left
+    (-0.96, 0.96),  # wristPitch_Left
+    (-0.96, 0.96),  # wristRoll_Left
     # Right arm.
     (-3.613, 2.042),  # shoulderPitch_Right
     (-2.793, 0.628),  # shoulderRoll_Right
     (-2.583, 2.583),  # shoulderYaw_Right
     (-2.496, 0.209),  # elbow_Right
     (-2.67, 2.67),  # wristYaw_Right
-    (-0.5, 0.5),  # wristPitch_Right
-    (-0.5, 0.5),  # wristRoll_Right
+    (-0.96, 0.96),  # wristPitch_Right
+    (-0.96, 0.96),  # wristRoll_Right
 )
 
 # Velocity limits (29 joints total)
@@ -232,23 +232,23 @@ OBS_JOINT_NAMES = [
 TORQUE_LIMIT = np.array(
     [
         # Left leg
-        170.0,
+        230.0,
         180.0,
-        55.0,
-        170.0,
+        105.0,
+        280.0,
         80.0,
         80.0,
         # Right leg
-        170.0,
+        230.0,
         180.0,
-        55.0,
-        170.0,
+        105.0,
+        280.0,
         80.0,
         80.0,
         # Waist
-        90.0,
-        90.0,
-        90.0,
+        150.0,
+        150.0,
+        150.0,
         # Left arm
         65.0,
         65.0,
@@ -383,11 +383,12 @@ LAFAN1_DATASETS = [
     # "run1_subject5_extended",
     # "run2_subject1_extended",
     # "run2_subject4_extended",
-    "walk1_subject1_extended",  # ok
+    # "walk1_subject1_extended",
     # "walk1_subject2_extended",
     # "walk1_subject5_extended",
     # "walk2_subject1_extended",
-    "walk2_subject3_extended",  # ok
+    # "walk2_subject3_extended",  # ok
+    "walk2_subject3_extended_fix",  # ok
     # "walk2_subject4_extended",
     # "walk3_subject1_extended",
     # "walk3_subject2_extended",
@@ -395,12 +396,12 @@ LAFAN1_DATASETS = [
     # "walk3_subject4_extended",
     # "walk3_subject5_extended",
     # "walk4_subject1_extended",
-    "dance1_subject1_extended",
-    "dance1_subject2_extended",  # ok
-    "dance1_subject3_extended",  # ok
-    "dance2_subject1_extended",
-    "dance2_subject2_extended",
-    "dance2_subject3_extended",
-    "dance2_subject4_extended",
-    "dance2_subject5_extended",  # ok
+    # "dance1_subject1_extended",
+    # "dance1_subject2_extended",
+    # "dance1_subject3_extended",  # ok
+    # "dance2_subject1_extended",
+    # "dance2_subject2_extended",
+    # "dance2_subject3_extended",
+    # "dance2_subject4_extended",
+    # "dance2_subject5_extended",  # ok
 ]

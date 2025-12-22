@@ -1,5 +1,5 @@
 <mujoco model="adam_sp scene">
-    <include file="adam_sp_box_feet_fix_damping_friction_smaller_kp_fix_torque_limit_and_armature_fix_torque_limit_2_new_pd.xml"/>
+    <include file="adam_sp_box_feet_fix_damping_friction_smaller_kp_fix_torque_limit_and_armature.xml"/>
 
     <statistic center="0 0 0.7" extent="1.2" meansize="0.04"/>
 
