@@ -228,8 +228,10 @@ class PlayAdamSPTrackingEnv:
     def _reset_from_current_traj(self):
         qpos, qvel = self.th.get_current_traj_data_fast(self.current_traj_info)
         self.evaluation_metrics = collections.defaultdict(list)
-        qpos = qpos.at[2].set(qpos[2] + 0.02)  # 需要将结果赋值回qpos
-        print(qpos[2])
+        # qpos = qpos.at[0:3].set([-0.02308106,  2.1168633,   0.9215524])  # 需要将结果赋值回qpos
+        # qpos = qpos.at[2].set(qpos[2])  # 需要将结果赋值回qpos
+        print(qpos[7:36])
+
         self.mj_data.qpos[:] = qpos
 
         self.mj_data.qvel[:] = qvel
@@ -243,6 +245,7 @@ class PlayAdamSPTrackingEnv:
         init_qpos, init_qvel = qpos, qvel
         self.current_traj_info = self.th.update_state(self.current_traj_info)
         qpos, qvel = self.th.get_current_traj_data_fast(self.current_traj_info)
+        print(qpos[0:3])
         info = {
             "step": 0,
             "last_motor_targets": self.mj_data.qpos[7:].copy(),
@@ -270,7 +273,7 @@ class PlayAdamSPTrackingEnv:
 
         if self.play_ref_motion:
             qpos, qvel = self.th.get_current_traj_data_fast(state.info["traj_info"])
-
+            print(qpos[0:3])
             self.mj_data.qpos[:] = qpos
             self.mj_data.qvel[:] = qvel
             mujoco.mj_forward(self.mj_model, self.mj_data)

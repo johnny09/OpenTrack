@@ -103,16 +103,16 @@ RESTRICTED_JOINT_RANGE = (
     (-2.583, 2.583),  # shoulderYaw_Left
     (-2.496, 0.209),  # elbow_Left
     (-2.67, 2.67),  # wristYaw_Left
-    (-0.96, 0.96),  # wristPitch_Left
-    (-0.96, 0.96),  # wristRoll_Left
+    (-0.5, 0.5),  # wristPitch_Left
+    (-0.5, 0.5),  # wristRoll_Left
     # Right arm.
     (-3.613, 2.042),  # shoulderPitch_Right
     (-2.793, 0.628),  # shoulderRoll_Right
     (-2.583, 2.583),  # shoulderYaw_Right
     (-2.496, 0.209),  # elbow_Right
     (-2.67, 2.67),  # wristYaw_Right
-    (-0.96, 0.96),  # wristPitch_Right
-    (-0.96, 0.96),  # wristRoll_Right
+    (-0.5, 0.5),  # wristPitch_Right
+    (-0.5, 0.5),  # wristRoll_Right
 )
 
 # Velocity limits (29 joints total)
@@ -388,7 +388,7 @@ LAFAN1_DATASETS = [
     # "walk1_subject5_extended",
     # "walk2_subject1_extended",
     # "walk2_subject3_extended",  # ok
-    "walk2_subject3_extended_fix",  # ok
+    # "walk2_subject3_extended_fix",  # ok
     # "walk2_subject4_extended",
     # "walk3_subject1_extended",
     # "walk3_subject2_extended",
@@ -397,11 +397,16 @@ LAFAN1_DATASETS = [
     # "walk3_subject5_extended",
     # "walk4_subject1_extended",
     # "dance1_subject1_extended",
-    # "dance1_subject2_extended",
+    "dance1_subject2_extended",
     # "dance1_subject3_extended",  # ok
     # "dance2_subject1_extended",
     # "dance2_subject2_extended",
     # "dance2_subject3_extended",
     # "dance2_subject4_extended",
     # "dance2_subject5_extended",  # ok
+]
+
+
+NOITOM_DATASETS = [
+   "anna_dance_gangnamstyle3_chr01_extended"
 ]
