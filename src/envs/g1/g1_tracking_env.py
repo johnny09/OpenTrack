@@ -47,7 +47,7 @@ def default_config() -> config_dict.ConfigDict:
         enable_randomize=ENABLE_RANDOMIZE,
         soft_joint_pos_limit_factor=0.95,
         reference_traj_config=config_dict.create(
-            name={"lafan1": consts.LAFAN1_DATASETS},
+            name={"unitree_g1_29dof": consts.MOCAP_DATASETS},
             random_start=True,
             fixed_start_frame=0,  # only works if random_start is False
             add_pertubation=False,  # only for test
