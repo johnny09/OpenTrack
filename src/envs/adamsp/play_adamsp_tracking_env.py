@@ -449,7 +449,7 @@ class PlayAdamSPTrackingEnv:
                 print(f"Loading trajectory {t_name} from {path_to_datasets}")
                 # load the npz file
                 traj_path = os.path.join(
-                    path_to_datasets, "PndAdamSP", "all", f"{t_name}.npz"
+                    path_to_datasets, "adamsp", f"{t_name}.npz"
                 )
                 traj = Trajectory.load(traj_path, backend=np)
 

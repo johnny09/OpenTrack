@@ -410,3 +410,9 @@ LAFAN1_DATASETS = [
 NOITOM_DATASETS = [
    "anna_dance_gangnamstyle3_chr01_extended"
 ]
+
+MOCAP_DATASETS = [
+    # "jinwumen_take_002_C_extended",
+    # "jinwumen_take_003_C_extended",
+    "jinwumen_take_006_C_extended"
+]

@@ -87,7 +87,7 @@ class ExtendTrajData(ReplayCallback):
                 mujoco.mj_forward(model, data)
                 self.min_z.append(get_min_z(model, data))
                 new_carry = env.th.update_state(new_carry)
-            self.min_z = np.min(self.min_z) + 0.01
+            self.min_z = np.min(self.min_z)
             print(f"min_z: {self.min_z}")
 
         data = env.set_sim_state_from_traj_data(data, traj_sample, carry)

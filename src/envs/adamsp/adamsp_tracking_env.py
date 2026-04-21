@@ -47,7 +47,7 @@ def default_config() -> config_dict.ConfigDict:
         enable_randomize=ENABLE_RANDOMIZE,
         soft_joint_pos_limit_factor=0.95,
         reference_traj_config=config_dict.create(
-            name={"noitom": consts.NOITOM_DATASETS},
+            name={"": consts.MOCAP_DATASETS},
             random_start=True,
             fixed_start_frame=0,  # only works if random_start is False
             add_pertubation=False,  # only for test
@@ -671,7 +671,7 @@ class AdamSPTrackingEnv(adamsp_base.AdamSPEnv):
             for idx, t_name in enumerate(tqdm(traj_names)):
                 # load the npz file
                 traj_path = os.path.join(
-                    path_to_datasets, "PndAdamSP", "all", f"{t_name}.npz"
+                    path_to_datasets, "adamsp", f"{t_name}.npz"
                 )
                 traj = Trajectory.load(traj_path, backend=np)
 
